@@ -130,7 +130,7 @@ is used for the external statistic multiplier and table lookup, following the fi
 For stored quantiles $q_p$, define
 
 $$
-p^{*}=\min_{q_p\geq T_{\mathrm{obs}}}p,\qquad \widehat p_{\mathrm{table}}=1-p^{*}.
+p^{\*}=\min_{q_p\geq T_{\mathrm{obs}}}p,\qquad \widehat p_{\mathrm{table}}=1-p^{\*}.
 $$
 
 The probability grid is 0.01 to 0.99 in increments of 0.01, so the result is a conservative step-function approximation. PBGoF does not interpolate across sample size or skewness.
