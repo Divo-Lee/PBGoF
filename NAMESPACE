@@ -1,0 +1,7 @@
+export(sn.fit.robust)
+export(sn.plot.check)
+export(PBGoF_cvm_test)
+export(PBGoF_ks_test)
+export(sn.para.bootstrap.cvm.test)
+export(sn.para.bootstrap.ks.test)
+importFrom(sn,selm)

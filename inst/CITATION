@@ -1,0 +1,17 @@
+citHeader("To cite PBGoF in publications, please use:")
+
+citEntry(
+  entry = "Manual",
+  title = "PBGoF: Parametric Bootstrap Goodness-of-Fit Tests for the Skew-Normal Distribution",
+  author = personList(
+    person("Hongxiang", "Li"),
+    person("Tsung Fei", "Khang")
+  ),
+  year = "2026",
+  note = "R package version 0.1.0",
+  textVersion = paste(
+    "Li H, Khang TF (2026).",
+    "PBGoF: Parametric Bootstrap Goodness-of-Fit Tests for the Skew-Normal Distribution.",
+    "R package version 0.1.0."
+  )
+)
