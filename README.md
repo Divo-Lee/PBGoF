@@ -62,7 +62,7 @@ PBGoF estimates the model through `sn.fit.robust()`: MLE is attempted first, fol
 For order statistics $X_{(1)}\leq\cdots\leq X_{(n)}$, define
 
 $$
-U_{(i)}=F_{\mathrm{SN}}\!\left(X_{(i)};\widehat{\boldsymbol\theta}\right),
+U_{(i)}=F_{\mathrm{SN}} \left(X_{(i)};\widehat{\boldsymbol\theta}\right),
 \qquad i=1,\ldots,n.
 $$
 
@@ -99,7 +99,7 @@ The functions `sn.para.bootstrap.ks.test()` and `sn.para.bootstrap.cvm.test()` r
 For $B_{\mathrm{valid}}$ finite bootstrap statistics, PBGoF uses
 
 $$
-\widehat p_{\mathrm{boot}}=\frac{1+\displaystyle\sum_{b=1}^{B_{\mathrm{valid}}}\mathbf{1}\!\left(T_b^*\geq T_{\mathrm{obs}}\right)}{B_{\mathrm{valid}}+1}.
+\widehat p_{\mathrm{boot}}=\frac{1+\displaystyle\sum_{b=1}^{B_{\mathrm{valid}}}\mathbf{1}  \left(T_b^*\geq T_{\mathrm{obs}}\right)}{B_{\mathrm{valid}}+1}.
 $$
 
 Failed fits are excluded and reported. Re-estimation in every replicate calibrates the statistic for the composite null rather than incorrectly treating the fitted distribution as fixed.
@@ -114,7 +114,7 @@ Failed fits are excluded and reported. Re-estimation in every replicate calibrat
 The lookup value is
 
 $$
-\gamma_{1,\mathrm{used}}=\min\!\left(0.99,\max\!\left[0.01,\mathrm{round}\!\left(\left|\widehat\gamma_1\right|,2\right)\right]\right).
+\gamma_{1,\mathrm{used}}=\min \left(0.99,\max  \left[0.01,\mathrm{round}  \left(\left|\widehat\gamma_1\right|,2\right)\right]\right).
 $$
 
 The absolute value follows reflection symmetry: if $X\sim\mathrm{SN}(\xi,\omega,\alpha)$, then $-X$ has shape $-\alpha$. The signs of $\alpha$ and $\gamma_1$ reverse, but the null distributions of the reflection-invariant EDF statistics do not. Therefore, $-g$ and $+g$ use the same reference row. PBGoF retains the signed `gamma1_hat` and returns the non-negative lookup value as `gamma1_used`.
