@@ -99,7 +99,7 @@ The functions `sn.para.bootstrap.ks.test()` and `sn.para.bootstrap.cvm.test()` r
 For $B_{\mathrm{valid}}$ finite bootstrap statistics, PBGoF uses
 
 $$
-\widehat p_{\mathrm{boot}}=\frac{1+\displaystyle\sum_{b=1}^{B_{\mathrm{valid}}}\mathds{1}  \left(T_b^*\geq T_{\mathrm{obs}}\right)}{B_{\mathrm{valid}}+1}.
+\widehat p_{\mathrm{boot}}=\frac{1+\displaystyle\sum_{b=1}^{B_{\mathrm{valid}}}\mathbf{1}  \left(T_b^*\geq T_{\mathrm{obs}}\right)}{B_{\mathrm{valid}}+1}.
 $$
 
 Failed fits are excluded and reported. Re-estimation in every replicate calibrates the statistic for the composite null rather than incorrectly treating the fitted distribution as fixed.
