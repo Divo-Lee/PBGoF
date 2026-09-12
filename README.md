@@ -117,7 +117,7 @@ $$
 \gamma_{1,\mathrm{used}}=\min \left(0.99,\max  \left[0.01,\mathrm{round}  \left(\left|\widehat\gamma_1\right|,2\right)\right]\right).
 $$
 
-The absolute value follows reflection symmetry: if $X\sim\mathrm{SN}(\xi,\omega,\alpha)$, then $-X$ has shape $-\alpha$. The signs of $\alpha$ and $\gamma_1$ reverse, but the null distributions of the reflection-invariant EDF statistics do not. Therefore, $-g$ and $+g$ use the same reference row. PBGoF retains the signed `gamma1_hat` and returns the non-negative lookup value as `gamma1_used`.
+The absolute value follows reflection symmetry: if $X\sim\mathrm{SN}(\xi,\omega,\alpha)$, then $-X$ has shape $-\alpha$. The signs of $\alpha$ and $\gamma_1$ reverse, but the null distributions of the reflection-invariant EDF statistics do not. Therefore, estimated skewness values with the same absolute magnitude but opposite signs use the same reference-table row. PBGoF retains the signed `gamma1_hat` and returns the non-negative lookup value as `gamma1_used`.
 
 The bundled tables cover sample sizes through 500. For $n>500$, all observations remain in the fit and EDF, but
 
