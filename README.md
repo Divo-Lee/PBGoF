@@ -1,2 +1,7 @@
 # PBGoF
-PBGoF R package provides goodness-of-fit tests for assessing whether a numeric sample is compatible with a univariate skew-normal distribution when its parameters are unknown and estimated from the same data.
+
+### PBGoF: Parametric Bootstrap Goodness-of-Fit Tests for the Skew-normal Distribution with Estimated Parameters
+
+Hongxiang Li and Tsung Fei Khang
+
+PBGoF: A R package provides goodness-of-fit tests for the skew-normal distribution with estimated parameters. Implements Kolmogorov-Smirnov and Cramer-von Mises tests using parametric bootstrap or precomputed simulation quantiles, together with robust parameter estimation procedures.
