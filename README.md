@@ -50,7 +50,7 @@ $$
 Writing $z=(x-\xi)/\omega$, the skew-normal density is
 
 $$
-f_{\mathrm{SN}}(x;\xi,\omega,\alpha)=\frac{2}{\omega}\,\phi(z)\,\Phi(\alpha z),
+f_{\mathrm{SN}}(x;\xi,\omega,\alpha)=\frac{2}{\omega} \phi(z) \Phi(\alpha z),
 $$
 
 where $\phi$ and $\Phi$ are the standard normal density and distribution functions. Because $\boldsymbol\theta=(\xi,\omega,\alpha)^{\mathsf T}$ is estimated from the sample, this is a composite goodness-of-fit problem; the usual KS null distribution for a fully specified model is not applicable.
