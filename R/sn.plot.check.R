@@ -32,10 +32,10 @@ sn.plot.check <- function(data,
                           breaks = "FD",
                           col = "grey85",
                           border = "white",
-                          curve_col = "#D55E00",
+                          curve_col = "#6CC6C6",
                           lwd = 2,
-                          main = "Skew-normal fit check",
-                          xlab = deparse(substitute(data)),
+                          main = NULL,
+                          xlab = "Values",
                           add_rug = TRUE,
                           ...) {
   fit <- sn.fit.robust(data, para_form = "DP")
@@ -90,14 +90,6 @@ sn.plot.check <- function(data,
   if (add_rug) {
     graphics::rug(data, col = grDevices::adjustcolor(curve_col, alpha.f = 0.45))
   }
-  graphics::legend(
-    "topright",
-    legend = "Fitted skew-normal density",
-    col = curve_col,
-    lwd = lwd,
-    bty = "n"
-  )
-
   invisible(list(
     parameters = parameters,
     histogram = histogram,
