@@ -69,20 +69,30 @@ $$
 
 where $F_{\mathrm{SN}}$ is the skew-normal distribution function evaluated at the fitted direct parameters $\widehat{\boldsymbol{\theta}}=(\widehat{\xi},\widehat{\omega},\widehat{\alpha})^{\mathsf{T}}$.
 
-The two-sided Kolmogorov-Smirnov discrepancy is
+The one-sided discrepancies and the two-sided Kolmogorov-Smirnov distance are
 
 $$
-D_n=\max_{1\leq i\leq n}
-\{
-\frac{i}{n}-U_{(i)},\;
-U_{(i)}-\frac{i-1}{n}
-\}.
+D_n^+=\max_{1\leq i\leq n}
+(\frac{i}{n}-U_{(i)}),
+\qquad
+D_n^-=\max_{1\leq i\leq n}
+(U_{(i)}-\frac{i-1}{n}),
 $$
 
-PBGoF reports the scaled KS statistic
+$$
+D_n=\max(D_n^+,D_n^-).
+$$
+
+The parametric-bootstrap KS test uses
 
 $$
-T_{\mathrm{KS}}=\sqrt{n_{\mathrm{eff}}}\,D_n.
+T_{\mathrm{KS,boot}}=\sqrt{n}\,D_n,
+$$
+
+whereas the precomputed-quantile KS test uses
+
+$$
+T_{\mathrm{KS,table}}=\sqrt{n_{\mathrm{eff}}}\,D_n.
 $$
 
 The Cramér-von Mises statistic is
@@ -90,15 +100,13 @@ The Cramér-von Mises statistic is
 $$
 W_n^2=\frac{1}{12n}+
 \sum_{i=1}^{n}
-[
-U_{(i)}-\frac{2i-1}{2n}
-]^2.
+(U_{(i)}-\frac{2i-1}{2n})^2.
 $$
 
 The parametric-bootstrap CvM test uses $W_n^2$, whereas the precomputed-quantile CvM test uses the table-compatible scaling
 
 $$
-T_{\mathrm{CvM}}=\sqrt{n_{\mathrm{eff}}}\,W_n^2.
+T_{\mathrm{CvM,table}}=\sqrt{n_{\mathrm{eff}}}\,W_n^2.
 $$
 
 For an ordinary sample within the table range, $n_{\mathrm{eff}}=n$.
@@ -117,7 +125,7 @@ If $B_{\mathrm{valid}}$ bootstrap fits produce finite statistics $T_1^*,\ldots,T
 $$
 \widehat{p}_{\mathrm{boot}}
 =\frac{1+\displaystyle\sum_{b=1}^{B_{\mathrm{valid}}}
-\mathbf{1}\{T_b^*\geq T_{\mathrm{obs}}\}}
+\mathbf{1}(T_b^*\geq T_{\mathrm{obs}})}
 {B_{\mathrm{valid}}+1}.
 $$
 
@@ -134,10 +142,10 @@ The lookup skewness is
 
 $$
 \gamma_{1,\mathrm{used}}
-=\min {0.99,
-\max {0.01,
+=\min(0.99,
+\max(0.01,
 \mathrm{round}(|\widehat{\gamma}_1|,2)
-}}.
+)).
 $$
 
 Taking the absolute value is justified by reflection symmetry. If $X\sim\mathrm{SN}(\xi,\omega,\alpha)$, then $-X$ has shape $-\alpha$; the signs of $\alpha$ and $\gamma_1$ reverse, but the null distributions of the reflection-invariant EDF statistics do not change. Consequently, fitted skewness values $-g$ and $+g$ use the same reference row. PBGoF retains the signed estimate as `gamma1_hat` and reports the non-negative lookup value as `gamma1_used`.
@@ -150,13 +158,7 @@ $$
 
 for the external statistic multiplier and the table lookup. This follows the finding that EDF critical values above $n=500$ are nearly identical to those at $n=500$ for the fitted skew-normal model.
 
-For the selected $(n_{\mathrm{eff}},\gamma_{1,\mathrm{used}})$ row, let $q_p$ be the stored $p$-quantile and define
-
-$$
-p^*=\min\{p:q_p\geq T_{\mathrm{obs}}\}.
-$$
-
-The lookup test returns the upper-tail approximation
+For the selected $(n_{\mathrm{eff}},\gamma_{1,\mathrm{used}})$ row, let $q_p$ be the stored $p$-quantile and let $p^*$ be the smallest stored probability satisfying $q_p\geq T_{\mathrm{obs}}$. At observations beyond the table range, $p^*$ is clamped to the nearest endpoint of the stored probability grid. The lookup test returns the upper-tail approximation
 
 $$
 \widehat{p}_{\mathrm{table}}=1-p^*.
