@@ -4,7 +4,7 @@
 #' Compute a skew-normal goodness-of-fit statistic and obtain an approximate
 #' p-value from the package's precomputed 100,000-replicate quantile tables.
 #' `PBGoF_ks_test()` uses the Kolmogorov--Smirnov statistic and
-#' `PBGoF_cvm_test()` uses the Cramer--von Mises statistic.
+#' `PBGoF_cvm_test()` uses the Cramér--von Mises statistic.
 #'
 #' @param data A numeric vector. Its length must be represented in the
 #'   selected quantile table (30 through 500 in the bundled tables).
@@ -61,18 +61,12 @@ NULL
 
 .PBGoF_load_quantile_table <- function(table, statistic) {
   if (is.null(table)) {
-    filename <- paste0(
-      tolower(statistic),
-      "_bootstrap_quantile_table_full.rds"
+    table <- switch(
+      statistic,
+      KS = ks_bootstrap_quantile_table_full,
+      CvM = cvm_bootstrap_quantile_table_full,
+      stop("Unknown statistic: ", statistic, call. = FALSE)
     )
-    path <- system.file("extdata", filename, package = "PBGoF")
-    if (!nzchar(path)) {
-      stop(
-        sprintf("Bundled %s quantile table was not found.", statistic),
-        call. = FALSE
-      )
-    }
-    table <- readRDS(path)
   }
 
   if (!is.data.frame(table)) {

@@ -26,7 +26,7 @@ the model in each bootstrap sample with \code{sn.fit.robust()}.
 }
 \details{
 The KS function uses \eqn{\sqrt{n}D}; the CvM function uses the
-Cramer--von Mises statistic. Failed fits are excluded and the p-value uses
+Cramér--von Mises statistic. Failed fits are excluded and the p-value uses
 the finite-simulation correction \eqn{(1 + \sum I(T_b >= T_0))/(B_{valid}+1)}.
 The names ending in \code{.1} are compatibility aliases.
 }

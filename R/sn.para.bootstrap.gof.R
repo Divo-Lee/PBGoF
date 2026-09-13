@@ -7,7 +7,7 @@
 #'
 #' `sn.para.bootstrap.ks.test()` uses the scaled Kolmogorov--Smirnov statistic
 #' `sqrt(n) * D`, while `sn.para.bootstrap.cvm.test()` uses the
-#' Cramer--von Mises statistic.
+#' Cramér--von Mises statistic.
 #'
 #' @param data A numeric vector with at least 10 finite observations.
 #' @param B A positive integer giving the number of bootstrap samples.

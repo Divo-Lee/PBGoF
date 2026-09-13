@@ -1,6 +1,6 @@
 Package: PBGoF
 Type: Package
-Title: Parametric Bootstrap Goodness-of-Fit Tests for the Skew-normal Distribution with Estimated Parameters
+Title: Parametric Bootstrap Goodness-of-Fit Tests for the Skew-Normal Distribution with Estimated Parameters
 Version: 0.1.0
 Date: 2026-09-12
 Authors@R: c(
@@ -11,7 +11,7 @@ Depends:
     R (>= 4.1)
 Description: Provides goodness-of-fit tests for the skew-normal distribution
     with estimated parameters. Implements Kolmogorov-Smirnov and
-    Cramer-von Mises tests using parametric bootstrap or precomputed simulation
+    Cramér-von Mises tests using parametric bootstrap or precomputed simulation
     quantiles, together with robust parameter estimation procedures. Methods
     are described at <https://github.com/Divo-Lee/PBGoF>.
 Imports:

@@ -48,7 +48,7 @@ The package offers two complementary approaches:
    represented in the bundled tables.
 
 Both approaches are available for the Kolmogorov--Smirnov (KS) and
-Cramer--von Mises (CvM) statistics. Parameter estimation is performed by
+Cramér--von Mises (CvM) statistics. Parameter estimation is performed by
 sn.fit.robust(), which uses a sequence of increasingly stabilized fitting
 methods.
 
