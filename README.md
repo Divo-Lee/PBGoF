@@ -40,7 +40,7 @@ PBGoF depends on the R packages `sn` and `methods`.
 
 ### Skew-normal model and composite null hypothesis
 
-Let \(X_1,\ldots,X_n\) be an independent sample. Under the null hypothesis, the observations follow a univariate skew-normal distribution,
+Let $X_1,\ldots,X_n$ be an independent sample. Under the null hypothesis, the observations follow a univariate skew-normal distribution,
 
 $$
 H_0:\quad X_i \overset{\mathrm{iid}}{\sim} \operatorname{SN}(\xi,\omega,\alpha),
@@ -73,16 +73,16 @@ The two-sided Kolmogorov-Smirnov discrepancy is
 
 $$
 D_n=\max_{1\leq i\leq n}
-\left\{
+\left {
 \frac{i}{n}-U_{(i)},\;
 U_{(i)}-\frac{i-1}{n}
-\right\}.
+\right }.
 $$
 
 PBGoF reports the scaled KS statistic
 
 $$
-T_{\mathrm{KS}}=\sqrt{n_{\mathrm{eff}}}\,D_n.
+T_{\mathrm{KS}}=\sqrt{n_{\mathrm{eff}}} D_n.
 $$
 
 The Cramér-von Mises statistic is
@@ -153,13 +153,13 @@ for the external statistic multiplier and the table lookup. This follows the fin
 For the selected \((n_{\mathrm{eff}},\gamma_{1,\mathrm{used}})\) row, let \(q_p\) be the stored \(p\)-quantile and define
 
 $$
-p^*=\min\left\{p:q_p\geq T_{\mathrm{obs}}\right\}.
+p^{*}=\min\left\{p:q_p\geq T_{\mathrm{obs}}\right\}.
 $$
 
 The lookup test returns the upper-tail approximation
 
 $$
-\widehat p_{\mathrm{table}}=1-p^*.
+\widehat p_{\mathrm{table}}=1-p^{*}.
 $$
 
 Because the stored probability grid runs from 0.01 to 0.99 in increments of 0.01, this p-value is a conservative step-function approximation and has no more precision than the table grid. PBGoF does not interpolate across sample size or skewness.
