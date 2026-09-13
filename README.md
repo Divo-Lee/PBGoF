@@ -134,10 +134,10 @@ The lookup skewness is
 
 $$
 \gamma_{1,\mathrm{used}}
-=\min\{0.99,
-\max\{0.01,
+=\min {0.99,
+\max {0.01,
 \mathrm{round}(|\widehat{\gamma}_1|,2)
-\}\}.
+}}.
 $$
 
 Taking the absolute value is justified by reflection symmetry. If $X\sim\mathrm{SN}(\xi,\omega,\alpha)$, then $-X$ has shape $-\alpha$; the signs of $\alpha$ and $\gamma_1$ reverse, but the null distributions of the reflection-invariant EDF statistics do not change. Consequently, fitted skewness values $-g$ and $+g$ use the same reference row. PBGoF retains the signed estimate as `gamma1_hat` and reports the non-negative lookup value as `gamma1_used`.
