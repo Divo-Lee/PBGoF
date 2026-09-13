@@ -43,56 +43,46 @@ PBGoF depends on the R packages `sn` and `methods`.
 Let $X_1,\ldots,X_n$ be an independent sample. Under the null hypothesis, the observations follow a univariate skew-normal distribution,
 
 $$
-H_0:\quad X_i \overset{\mathrm{iid}}{\sim} \mathrm{SN}(\xi,\omega,\alpha),
+H_0:\quad X_i \overset{\mathrm{iid}}{\sim} \operatorname{SN}(\xi,\omega,\alpha),
 \qquad \xi\in\mathbb{R},\quad \omega>0,\quad \alpha\in\mathbb{R}.
 $$
 
-Writing $z=(x-\xi)/\omega$, its density is
+Writing \(z=(x-\xi)/\omega\), its density is
 
 $$
-f_{\mathrm{SN}}(x;\xi,\omega,\alpha)
+f_{\operatorname{SN}}(x;\xi,\omega,\alpha)
 =\frac{2}{\omega}\,\phi(z)\,\Phi(\alpha z),
 $$
 
-where $\phi$ and $\Phi$ denote the standard normal density and distribution functions. Because $\boldsymbol{\theta}=(\xi,\omega,\alpha)^{\mathsf{T}}$ is estimated from the sample, this is a composite goodness-of-fit problem; therefore, the usual KS distribution for a completely specified null model is not applicable.
+where \(\phi\) and \(\Phi\) denote the standard normal density and distribution functions. Because \(\boldsymbol\theta=(\xi,\omega,\alpha)^{\mathsf T}\) is estimated from the sample, this is a composite goodness-of-fit problem; therefore, the usual KS distribution for a completely specified null model is not applicable.
 
 PBGoF estimates the model through `sn.fit.robust()`. The function first attempts maximum likelihood estimation (MLE), then maximum penalized likelihood estimation (MPLE), and finally MPLE with the matching-prior penalty. A fitted model is accepted only when its parameter estimates and standard errors are finite and its scale estimate is positive.
 
 ### EDF statistics with estimated parameters
 
-Let $X_{(1)}\leq\cdots\leq X_{(n)}$ denote the order statistics and let
+Let \(X_{(1)}\leq\cdots\leq X_{(n)}\) denote the order statistics and let
 
 $$
-U_{(i)}=F_{\mathrm{SN}}(X_{(i)};\widehat{\boldsymbol{\theta}}),
+U_{(i)}=F_{\operatorname{SN}}\!\left(X_{(i)};\widehat{\boldsymbol\theta}\right),
 \qquad i=1,\ldots,n,
 $$
 
-where $F_{\mathrm{SN}}$ is the skew-normal distribution function evaluated at the fitted direct parameters $\widehat{\boldsymbol{\theta}}=(\widehat{\xi},\widehat{\omega},\widehat{\alpha})^{\mathsf{T}}$.
+where \(F_{\operatorname{SN}}\) is the skew-normal distribution function evaluated at the fitted direct parameters \(\widehat{\boldsymbol\theta}=(\widehat\xi,\widehat\omega,\widehat\alpha)^{\mathsf T}\).
 
-The one-sided discrepancies and the two-sided Kolmogorov-Smirnov distance are
-
-$$
-D_n^+=\max_{1\leq i\leq n}
-(\frac{i}{n}-U_{(i)}),
-\qquad
-D_n^-=\max_{1\leq i\leq n}
-(U_{(i)}-\frac{i-1}{n}),
-$$
+The two-sided Kolmogorov-Smirnov discrepancy is
 
 $$
-D_n=\max(D_n^+,D_n^-).
+D_n=\max_{1\leq i\leq n}
+\left {
+\frac{i}{n}-U_{(i)},\;
+U_{(i)}-\frac{i-1}{n}
+\right }.
 $$
 
-The parametric-bootstrap KS test uses
+PBGoF reports the scaled KS statistic
 
 $$
-T_{\mathrm{KS,boot}}=\sqrt{n}\,D_n,
-$$
-
-whereas the precomputed-quantile KS test uses
-
-$$
-T_{\mathrm{KS,table}}=\sqrt{n_{\mathrm{eff}}}\,D_n.
+T_{\mathrm{KS}}=\sqrt{n_{\mathrm{eff}}} D_n.
 $$
 
 The Cramér-von Mises statistic is
@@ -100,32 +90,34 @@ The Cramér-von Mises statistic is
 $$
 W_n^2=\frac{1}{12n}+
 \sum_{i=1}^{n}
-(U_{(i)}-\frac{2i-1}{2n})^2.
+\left[
+U_{(i)}-\frac{2i-1}{2n}
+\right]^2.
 $$
 
-The parametric-bootstrap CvM test uses $W_n^2$, whereas the precomputed-quantile CvM test uses the table-compatible scaling
+The parametric-bootstrap CvM test uses \(W_n^2\), whereas the precomputed-quantile CvM test uses the table-compatible scaling
 
 $$
-T_{\mathrm{CvM,table}}=\sqrt{n_{\mathrm{eff}}}\,W_n^2.
+T_{\mathrm{CvM}}=\sqrt{n_{\mathrm{eff}}}\,W_n^2.
 $$
 
-For an ordinary sample within the table range, $n_{\mathrm{eff}}=n$.
+For an ordinary sample within the table range, \(n_{\mathrm{eff}}=n\).
 
 ### Parametric-bootstrap calibration
 
 The functions `sn.para.bootstrap.ks.test()` and `sn.para.bootstrap.cvm.test()` account for parameter estimation by reproducing the complete fitting procedure in every bootstrap sample:
 
-1. Fit the skew-normal model to the observed data and compute $T_{\mathrm{obs}}$.
-2. Generate $B$ independent samples of size $n$ from $\mathrm{SN}(\widehat{\xi},\widehat{\omega},\widehat{\alpha})$.
+1. Fit the skew-normal model to the observed data and compute \(T_{\mathrm{obs}}\).
+2. Generate \(B\) independent samples of size \(n\) from \(\operatorname{SN}(\widehat\xi,\widehat\omega,\widehat\alpha)\).
 3. Re-estimate all skew-normal parameters separately in every bootstrap sample.
 4. Compute the same EDF statistic, using that bootstrap sample's fitted parameters.
 
-If $B_{\mathrm{valid}}$ bootstrap fits produce finite statistics $T_1^*,\ldots,T_{B_{\mathrm{valid}}}^*$, PBGoF uses the finite-simulation correction
+If \(B_{\mathrm{valid}}\) bootstrap fits produce finite statistics \(T_1^*,\ldots,T_{B_{\mathrm{valid}}}^*\), PBGoF uses the finite-simulation correction
 
 $$
-\widehat{p}_{\mathrm{boot}}
+\widehat p_{\mathrm{boot}}
 =\frac{1+\displaystyle\sum_{b=1}^{B_{\mathrm{valid}}}
-\mathbf{1}(T_b^*\geq T_{\mathrm{obs}})}
+\mathbf{1}\!\left(T_b^*\geq T_{\mathrm{obs}}\right)}
 {B_{\mathrm{valid}}+1}.
 $$
 
@@ -135,33 +127,39 @@ Failed fits are excluded and reported. Re-estimating the parameters in every rep
 
 The functions `PBGoF_ks_test()` and `PBGoF_cvm_test()` provide a faster alternative based on tables generated from 100,000 Monte Carlo replicates for each available combination of sample size and centered skewness. The observed data are fitted twice:
 
-- the direct parameterization (DP), $(\xi,\omega,\alpha)$, is used to evaluate the fitted distribution and calculate the EDF statistic;
-- the centered parameterization (CP), $(\mu,\sigma,\gamma_1)$, is used to match the estimated skewness to the simulation table.
+- the direct parameterization (DP), \((\xi,\omega,\alpha)\), is used to evaluate the fitted distribution and calculate the EDF statistic;
+- the centered parameterization (CP), \((\mu,\sigma,\gamma_1)\), is used to match the estimated skewness to the simulation table.
 
 The lookup skewness is
 
 $$
 \gamma_{1,\mathrm{used}}
-=\min(0.99,
-\max(0.01,
-\mathrm{round}(|\widehat{\gamma}_1|,2)
-)).
+=\min\!\left\{0.99,
+\max\!\left[0.01,
+\operatorname{round}\!\left(\left|\widehat\gamma_1\right|,2\right)
+\right]\right\}.
 $$
 
-Taking the absolute value is justified by reflection symmetry. If $X\sim\mathrm{SN}(\xi,\omega,\alpha)$, then $-X$ has shape $-\alpha$; the signs of $\alpha$ and $\gamma_1$ reverse, but the null distributions of the reflection-invariant EDF statistics do not change. Consequently, fitted skewness values $-g$ and $+g$ use the same reference row. PBGoF retains the signed estimate as `gamma1_hat` and reports the non-negative lookup value as `gamma1_used`.
+Taking the absolute value is justified by reflection symmetry. If \(X\sim\operatorname{SN}(\xi,\omega,\alpha)\), then \(-X\) has shape \(-\alpha\); the signs of \(\alpha\) and \(\gamma_1\) reverse, but the null distributions of the reflection-invariant EDF statistics do not change. Consequently, fitted skewness values \(-g\) and \(+g\) use the same reference row. PBGoF retains the signed estimate as `gamma1_hat` and reports the non-negative lookup value as `gamma1_used`.
 
-The bundled tables cover sample sizes through 500. For $n>500$, all observations remain in the parameter fit and empirical distribution function, but PBGoF sets
+The bundled tables cover sample sizes through 500. For \(n>500\), all observations remain in the parameter fit and empirical distribution function, but PBGoF sets
 
 $$
 n_{\mathrm{eff}}=\min(n,500)=500
 $$
 
-for the external statistic multiplier and the table lookup. This follows the finding that EDF critical values above $n=500$ are nearly identical to those at $n=500$ for the fitted skew-normal model.
+for the external statistic multiplier and the table lookup. This follows the finding that EDF critical values above \(n=500\) are nearly identical to those at \(n=500\) for the fitted skew-normal model.
 
-For the selected $(n_{\mathrm{eff}},\gamma_{1,\mathrm{used}})$ row, let $q_p$ be the stored $p$-quantile and let $p^*$ be the smallest stored probability satisfying $q_p\geq T_{\mathrm{obs}}$. At observations beyond the table range, $p^*$ is clamped to the nearest endpoint of the stored probability grid. The lookup test returns the upper-tail approximation
+For the selected \((n_{\mathrm{eff}},\gamma_{1,\mathrm{used}})\) row, let \(q_p\) be the stored \(p\)-quantile and define
 
 $$
-\widehat{p}_{\mathrm{table}}=1-p^*.
+p^{*}=\min\left\{p:q_p\geq T_{\mathrm{obs}}\right\}.
+$$
+
+The lookup test returns the upper-tail approximation
+
+$$
+\widehat p_{\mathrm{table}}=1-p^{*}.
 $$
 
 Because the stored probability grid runs from 0.01 to 0.99 in increments of 0.01, this p-value is a conservative step-function approximation and has no more precision than the table grid. PBGoF does not interpolate across sample size or skewness.
