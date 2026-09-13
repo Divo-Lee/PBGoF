@@ -7,10 +7,10 @@ sn.plot.check(
   breaks = "FD",
   col = "grey85",
   border = "white",
-  curve_col = "#D55E00",
+  curve_col = "#6CC6C6",
   lwd = 2,
-  main = "Skew-normal fit check",
-  xlab = deparse(substitute(data)),
+  main = NULL,
+  xlab = "Values",
   add_rug = TRUE,
   ...
 )
