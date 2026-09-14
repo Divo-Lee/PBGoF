@@ -70,7 +70,7 @@ The two-sided Kolmogorov-Smirnov discrepancy and PBGoF scaling are
 
 $$
 D_n=\max_{1\leq i\leq n}\left(\frac{i}{n}-U_{(i)},\;U_{(i)}-\frac{i-1}{n}\right),
-\qquad T_{\mathrm{KS}}=\sqrt{n_{\mathrm{eff}}}\,D_n.
+\qquad T_{\mathrm{KS}}=\sqrt{n_{\mathrm{eff}}} D_n.
 $$
 
 The Cramer-von Mises statistic is
@@ -82,7 +82,7 @@ $$
 The parametric-bootstrap CvM test uses $W_n^2$, whereas the precomputed-quantile CvM test uses
 
 $$
-T_{\mathrm{CvM}}=\sqrt{n_{\mathrm{eff}}}\,W_n^2.
+T_{\mathrm{CvM}}=\sqrt{n_{\mathrm{eff}}} W_n^2.
 $$
 
 Within the table range, $n_{\mathrm{eff}}=n$.
