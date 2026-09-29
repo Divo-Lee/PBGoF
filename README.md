@@ -1,6 +1,6 @@
 # PBGoF
 
-### PBGoF 0.2.0: Parametric Bootstrap Goodness-of-Fit Tests for Skew-Normal and Skew-t Distributions
+### PBGoF (version 0.2.0): Parametric Bootstrap Goodness-of-Fit Tests for Skew-Normal and Skew-t Distributions
 
 Hongxiang Li, Chenglin Xu, and Tsung Fei Khang
 
