@@ -30,8 +30,8 @@
 #' @export
 sn.plot.check <- function(data,
                           breaks = "FD",
-                          col = "grey85",
-                          border = "white",
+                          col = "grey83",
+                          border = "grey83",
                           curve_col = "#6CC6C6",
                           lwd = 2,
                           main = NULL,

@@ -5,8 +5,8 @@
 sn.plot.check(
   data,
   breaks = "FD",
-  col = "grey85",
-  border = "white",
+  col = "grey83",
+  border = "grey83",
   curve_col = "#6CC6C6",
   lwd = 2,
   main = NULL,
@@ -44,3 +44,4 @@ set.seed(123)
 x <- sn::rsn(100, xi = 0, omega = 1, alpha = 4)
 sn.plot.check(x)
 }
+

@@ -1,20 +1,28 @@
 # PBGoF
 
-### PBGoF: Parametric Bootstrap Goodness-of-Fit Tests for the Skew-normal Distribution with Estimated Parameters
+### PBGoF 0.2.0: Parametric Bootstrap Goodness-of-Fit Tests for Skew-Normal and Skew-t Distributions
 
-Hongxiang Li and Tsung Fei Khang
+Hongxiang Li, Chenglin Xu, and Tsung Fei Khang
 
-PBGoF is an R package for assessing whether a numeric sample is compatible with a univariate skew-normal distribution when the model parameters are estimated from the same data. It provides Kolmogorov-Smirnov (KS) and Cramer-von Mises (CvM) tests using either a parametric bootstrap or precomputed simulation quantiles, together with robust parameter estimation procedures.
+PBGoF provides goodness-of-fit procedures, robust parameter fitting, and
+graphical diagnostics for univariate skew-normal and skew-t distributions.
+Version 0.1.0 focused on skew-normal models, including robust fitting,
+precomputed-quantile tests, and parametric-bootstrap KS and CvM tests. Version
+0.2.0 extends the package to skew-t models through `st.fit.robust()`,
+skew-t parametric-bootstrap KS and CvM tests, and the unified
+`para.bootstrap.test()` interface, which allows users to select either the SN
+or ST model. It also adds `st.plot.check()` and the model-selectable
+`cdf.plot.check()` and `QQ.plot()` diagnostics for SN and ST models.
 
 ## Installation
 
-Install PBGoF from a local source archive with:
+Install PBGoF 0.2.0 from a local source archive with:
 
 ```r
-install.packages("PBGoF_0.1.0.tar.gz", repos = NULL, type = "source")
+install.packages("PBGoF_0.2.0.tar.gz", repos = NULL, type = "source")
 ```
 
-Install PBGoF from GitHub with `devtools`:
+The original PBGoF GitHub installation instructions remain applicable to PBGoF itself:
 
 ```r
 if (!"devtools" %in% rownames(installed.packages())) {
@@ -36,6 +44,9 @@ pak::pkg_install("Divo-Lee/PBGoF")
 
 PBGoF depends on the R packages `sn` and `methods`.
 
+For skew-t models, PBGoF provides `st.fit.robust()`,
+`para.bootstrap.test()`, and `st.plot.check()`.
+
 ## Methods
 
 ### Skew-normal model and composite null hypothesis
@@ -55,7 +66,21 @@ $$
 
 where $\phi$ and $\Phi$ are the standard normal density and distribution functions. Because $\boldsymbol\theta=(\xi,\omega,\alpha)^{\mathsf T}$ is estimated from the sample, this is a composite goodness-of-fit problem; the usual KS null distribution for a fully specified model is not applicable.
 
-PBGoF estimates the model through `sn.fit.robust()`: MLE is attempted first, followed by MPLE and then MPLE with the matching-prior penalty. A fit is accepted only if the estimates and standard errors are finite and the scale is positive.
+PBGoF estimates the model through `sn.fit.robust()`: MLE is attempted first,
+followed by increasingly stabilized penalized fits. A fit is accepted only if
+the estimates and standard errors are finite and the scale is positive.
+
+### Skew-t model
+
+The skew-t family extends the skew-normal model by adding a positive
+degrees-of-freedom parameter $\nu$. Its direct parameterization is
+$(\xi,\omega,\alpha,\nu)$. The extra parameter allows asymmetry and heavy tails
+to be represented together; as $\nu$ becomes large, the skew-t model approaches
+the skew-normal model.
+
+`st.fit.robust()` first attempts ordinary MLE and then uses Q-penalized MPLE as
+a fallback. Its DP output contains `xi`, `omega`, `alpha`, `nu` and their
+standard errors. CP output is available when the corresponding moments exist.
 
 ### EDF statistics with estimated parameters
 
@@ -89,10 +114,17 @@ Within the table range, $n_{\mathrm{eff}}=n$.
 
 ### Parametric-bootstrap calibration
 
-The functions `sn.para.bootstrap.ks.test()` and `sn.para.bootstrap.cvm.test()` reproduce the full estimation procedure:
+The unified function `para.bootstrap.test()` selects the model through
+`model = "SN"` or `model = "ST"`, and selects the statistic through
+`statistic = "KS"` or `statistic = "CvM"`. For example,
+`para.bootstrap.test(x, model = "SN", statistic = "KS")` and
+`para.bootstrap.test(x, model = "ST", statistic = "CvM")` calibrate the
+corresponding tests for an estimated model. The previous model- and
+statistic-specific functions remain available for compatibility. Both model
+families use the same full-estimation bootstrap principle:
 
 1. Fit the observed sample and compute $T_{\mathrm{obs}}$.
-2. Generate $B$ samples of size $n$ from $\mathrm{SN}(\widehat\xi,\widehat\omega,\widehat\alpha)$.
+2. Generate $B$ samples of size $n$ from the fitted SN or skew-t model.
 3. Re-estimate all parameters independently in each bootstrap sample.
 4. Compute the same statistic with that sample's fitted parameters.
 
@@ -102,9 +134,15 @@ $$
 \widehat p_{\mathrm{boot}}=\frac{1+\displaystyle\sum_{b=1}^{B_{\mathrm{valid}}}\mathbf{1}  \left(T_b^*\geq T_{\mathrm{obs}}\right)}{B_{\mathrm{valid}}+1}.
 $$
 
-Failed fits are excluded and reported. Re-estimation in every replicate calibrates the statistic for the composite null rather than incorrectly treating the fitted distribution as fixed.
+Failed fits are excluded and reported. Re-estimation in every replicate
+calibrates the statistic for the composite null rather than incorrectly
+treating the fitted distribution as fixed. For skew-t, all four parameters,
+including $\nu$, are re-estimated in every valid replicate.
 
-### Precomputed-quantile calibration
+The precomputed skew-normal tests remain available through
+`PBGoF_ks_test()` and `PBGoF_cvm_test()`.
+
+### Precomputed-quantile calibration for skew-normal data
 
 `PBGoF_ks_test()` and `PBGoF_cvm_test()` use tables generated from 100,000 Monte Carlo replicates per available sample-size and centered-skewness combination. The data are fitted in two parameterizations:
 
@@ -135,9 +173,14 @@ $$
 
 The probability grid is 0.01 to 0.99 in increments of 0.01, so the result is a conservative step-function approximation. PBGoF does not interpolate across sample size or skewness.
 
-### Interpretation
+### Graphical checks and interpretation
 
-A small p-value is evidence against the fitted skew-normal model. A large p-value does not prove skew-normality; it means the test did not detect a departure at the available sample size and calibration resolution. Use `sn.plot.check()` alongside the formal tests.
+A small p-value is evidence against the fitted model. A large p-value does not
+prove skew-normality or skew-t adequacy; it means that the test did not detect
+a departure at the available sample size and calibration resolution. Use
+`sn.plot.check()` for SN fits and `st.plot.check()` for skew-t fits alongside
+the corresponding formal tests. The precomputed-quantile functions remain
+specific to the skew-normal family.
 
 ## References
 

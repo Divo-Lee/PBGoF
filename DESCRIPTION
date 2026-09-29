@@ -1,19 +1,19 @@
 Package: PBGoF
 Type: Package
-Title: Parametric Bootstrap Goodness-of-Fit Tests for the Skew-Normal Distribution with Estimated Parameters
-Version: 0.1.0
-Date: 2026-09-12
+Title: Parametric Bootstrap Goodness-of-Fit Tests for Skew-Normal and Skew-t Distributions
+Version: 0.2.0
+Date: 2026-09-19
 Authors@R: c(
     person("Hongxiang", "Li", email = "hxli@ynnu.edu.cn", role = c("aut", "cre")),
+    person("Chenglin", "Xu", email = "chenglinx@ynnu.edu.cn", role = "aut"),
     person("Tsung Fei", "Khang", email = "tfkhang@um.edu.my", role = "aut"))
+Author: Hongxiang Li [aut, cre], Chenglin Xu [aut], Tsung Fei Khang [aut]
 Maintainer: Hongxiang Li <hxli@ynnu.edu.cn>
 Depends:
     R (>= 4.1)
-Description: Provides goodness-of-fit tests for the skew-normal distribution
-    with estimated parameters. Implements Kolmogorov-Smirnov and
-    Cramér-von Mises tests using parametric bootstrap or precomputed simulation
-    quantiles, together with robust parameter estimation procedures. Methods
-    are described at <https://github.com/Divo-Lee/PBGoF>.
+Description: Provides precomputed-quantile goodness-of-fit tests for
+    skew-normal distributions, parametric-bootstrap tests for skew-normal and
+    skew-t distributions, robust fitting, and graphical diagnostics.
 Imports:
     methods,
     sn
@@ -23,7 +23,6 @@ Suggests:
 VignetteBuilder: knitr
 License: GPL (>= 2)
 Encoding: UTF-8
-LazyData: TRUE
 Roxygen: list(markdown = TRUE)
 Config/roxygen2/version: 8.0.0
 Config/testthat/edition: 3

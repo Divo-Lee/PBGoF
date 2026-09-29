@@ -1,12 +1,13 @@
-citHeader("To cite PBGoF in publications, please use:")
+citHeader("To cite PBGoF version 0.2.0 in publications, please use:")
 
 bibentry(
   bibtype = "Manual",
-  title = "PBGoF: Parametric Bootstrap Goodness-of-Fit Tests for the Skew-Normal Distribution with Estimated Parameters",
+  title = "PBGoF: Parametric Bootstrap Goodness-of-Fit Tests for Skew-Normal and Skew-t Distributions",
   author = c(
     person("Hongxiang", "Li"),
+    person("Chenglin", "Xu", email = "chenglinx@ynnu.edu.cn"),
     person("Tsung Fei", "Khang")
   ),
   year = "2026",
-  note = "R package version 0.1.0"
+  note = "R package version 0.2.0"
 )

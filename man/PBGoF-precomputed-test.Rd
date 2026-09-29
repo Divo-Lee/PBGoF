@@ -1,7 +1,8 @@
-\name{PBGoF-precomputed-tests}
+\name{PBGoF-precomputed-test}
+\alias{PBGoF-precomputed-test}
 \alias{PBGoF_ks_test}
 \alias{PBGoF_cvm_test}
-\title{Fast Skew-Normal Goodness-of-Fit Tests Using Precomputed Quantiles}
+\title{Skew-Normal Goodness-of-Fit Tests Using Precomputed Quantiles}
 \usage{
 PBGoF_ks_test(data, ks_table = NULL)
 
@@ -9,6 +10,7 @@ PBGoF_cvm_test(data, cvm_table = NULL)
 }
 \arguments{
 \item{data}{A numeric vector whose length is represented in the table.}
+
 \item{ks_table, cvm_table}{Optional custom quantile tables. If \code{NULL},
 the corresponding table bundled with PBGoF is used.}
 }
