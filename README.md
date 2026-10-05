@@ -97,11 +97,11 @@ U_{(i)}=F_{\mathrm{SN}} \left(X_{(i)};\widehat{\boldsymbol\theta}\right),
 \qquad i=1,\ldots,n.
 $$
 
-The two-sided Kolmogorov-Smirnov discrepancy and PBGoF scaling are
+The two-sided Kolmogorov-Smirnov discrepancy and the statistic used by PBGoF are
 
 $$
 D_n=\max_{1\leq i\leq n}\left(\frac{i}{n}-U_{(i)},\;U_{(i)}-\frac{i-1}{n}\right),
-\qquad T_{\mathrm{KS}}=\sqrt{n_{\mathrm{eff}}} D_n.
+\qquad T_{\mathrm{KS}}=\sqrt{n} D_n.
 $$
 
 The Cramer-von Mises statistic is
@@ -110,13 +110,11 @@ $$
 W_n^2=\frac{1}{12n}+\sum_{i=1}^{n}\left[U_{(i)}-\frac{2i-1}{2n}\right]^2.
 $$
 
-The parametric-bootstrap CvM test uses $W_n^2$, whereas the precomputed-quantile CvM test uses
+The parametric-bootstrap CvM test uses $W_n^2$. Within the tabulated sample-size range, the precomputed-quantile CvM test uses
 
 $$
-T_{\mathrm{CvM}}=\sqrt{n_{\mathrm{eff}}} W_n^2.
+T_{\mathrm{CvM}}=\sqrt{n} W_n^2.
 $$
-
-Within the table range, $n_{\mathrm{eff}}=n$.
 
 ### Parametric-bootstrap calibration
 
@@ -163,18 +161,12 @@ $$
 
 The absolute value follows reflection symmetry: if $X\sim\mathrm{SN}(\xi,\omega,\alpha)$, then $-X$ has shape $-\alpha$. The signs of $\alpha$ and $\gamma_1$ reverse, but the null distributions of the reflection-invariant EDF statistics do not. Therefore, estimated skewness values with the same absolute magnitude but opposite signs use the same reference-table row. PBGoF retains the signed `gamma1_hat` and returns the non-negative lookup value as `gamma1_used`.
 
-The bundled tables cover sample sizes through 500. For $n>500$, all observations remain in the fit and EDF, but
+The bundled tables cover sample sizes through 500. For $n>500$, all observations remain in the fit and EDF, while `n_used = 500` is used only to select the table row. The KS test compares $\sqrt{n}D_n$ with the stored $n=500$ quantiles. For CvM, the stored $n=500$ quantiles are divided by $\sqrt{500}$ and compared with the observed $W_n^2$. This follows the approximation of using the $n=500$ critical values for larger samples.
+
+Let $q_p^{\dagger}$ denote the selected quantiles expressed on the same scale as the observed statistic; for CvM with $n>500$, $q_p^{\dagger}=q_p/\sqrt{500}$. The table-based p-value is
 
 $$
-n_{\mathrm{eff}}=\min(n,500)=500
-$$
-
-is used for the external statistic multiplier and table lookup, following the finding that fitted-skew-normal EDF critical values above 500 are nearly identical to those at 500.
-
-For stored quantiles $q_p$, define
-
-$$
-p^{\*}=\min_{q_p\geq T_{\mathrm{obs}}}p,\qquad \widehat p_{\mathrm{table}}=1-p^{\*}.
+p^{\*}=\min_{q_p^{\dagger}\geq T_{\mathrm{obs}}}p,\qquad \widehat p_{\mathrm{table}}=1-p^{\*}.
 $$
 
 The probability grid is 0.01 to 0.99 in increments of 0.01, so the result is a conservative step-function approximation. PBGoF does not interpolate across sample size or skewness.
