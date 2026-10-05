@@ -161,7 +161,7 @@ $$
 
 The absolute value follows reflection symmetry: if $X\sim\mathrm{SN}(\xi,\omega,\alpha)$, then $-X$ has shape $-\alpha$. The signs of $\alpha$ and $\gamma_1$ reverse, but the null distributions of the reflection-invariant EDF statistics do not. Therefore, estimated skewness values with the same absolute magnitude but opposite signs use the same reference-table row. PBGoF retains the signed `gamma1_hat` and returns the non-negative lookup value as `gamma1_used`.
 
-The bundled tables cover sample sizes through 500. For $n>500$, all observations remain in the fit and EDF, while `n_used = 500` is used only to select the table row. The KS test compares $\sqrt{n}D_n$ with the stored $n=500$ quantiles. For CvM, the stored $n=500$ quantiles are divided by $\sqrt{500}$ and compared with the observed $W_n^2$. This follows the approximation of using the $n=500$ critical values for larger samples.
+The bundled tables cover sample sizes through 500. For $n>500$, all observations remain in the fit and EDF, while the $n=500$ row is used for table lookup. The KS test compares $\sqrt{n}D_n$ with the stored $n=500$ quantiles. For CvM, the stored $n=500$ quantiles are divided by $\sqrt{500}$ and compared with the observed $W_n^2$. This follows the approximation of using the $n=500$ critical values for larger samples.
 
 Let $q_p^{\dagger}$ denote the selected quantiles expressed on the same scale as the observed statistic; for CvM with $n>500$, $q_p^{\dagger}=q_p/\sqrt{500}$. The table-based p-value is
 

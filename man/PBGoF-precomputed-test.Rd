@@ -16,9 +16,8 @@ represented in the table.}
 the corresponding table bundled with PBGoF is used.}
 }
 \value{
-A list containing \code{statistic}, actual sample size \code{n}, table-lookup
-sample size \code{n_used}, \code{gamma1_hat}, \code{gamma1_used}, and
-\code{p.value}.
+A list containing \code{statistic}, actual sample size \code{n},
+\code{gamma1_hat}, \code{gamma1_used}, and \code{p.value}.
 }
 \description{
 Computes a skew-normal goodness-of-fit statistic and obtains an approximate

@@ -12,9 +12,8 @@
 #'   `n`, `gamma1`, and `q_0.01` through `q_0.99`. If `NULL`, the corresponding
 #'   table bundled with PBGoF is used.
 #'
-#' @return A list with components `statistic`, `n`, `n_used`, `gamma1_hat`,
-#'   `gamma1_used`, and `p.value`. `n` is the actual sample size and `n_used`
-#'   is the sample size used for table lookup.
+#' @return A list with components `statistic`, `n`, `gamma1_hat`,
+#'   `gamma1_used`, and `p.value`.
 #'
 #' @details
 #' The observed distribution is fitted in DP form for the test statistic and
@@ -29,9 +28,10 @@
 #' gamma1. The absolute fitted skewness is rounded to
 #' two decimal places and truncated to `[0.01, 0.99]`.
 #'
-#' For samples larger than 500, all observations are retained and `n_used` is
-#' set to 500 for table lookup. The KS comparison retains the actual-sample-size
-#' scaling, so `sqrt(n) * D_n` is compared with the stored `n = 500` quantiles.
+#' For samples larger than 500, all observations are retained and the
+#' `n = 500` row is used for table lookup. The KS comparison retains the
+#' actual-sample-size scaling, so `sqrt(n) * D_n` is compared with the stored
+#' `n = 500` quantiles.
 #' For CvM, the stored `n = 500` quantiles are divided by `sqrt(500)` and
 #' compared with the unscaled `W_n^2`. Mateu-Figueras et al. (2007) found that,
 #' for sample sizes above 500, the relevant quantiles were almost identical to
@@ -121,8 +121,12 @@ NULL
   }
 
   maximum_table_n <- max(quantile_table$n)
-  n_used <- min(n, maximum_table_n)
-  observed_statistic <- statistic_function(data, dp, n_used)
+  table_n <- min(n, maximum_table_n)
+  above_table_range <- n > maximum_table_n
+  observed_statistic <- statistic_function(data, dp)
+  if (statistic == "CvM" && !above_table_range) {
+    observed_statistic <- sqrt(n) * observed_statistic
+  }
   if (!is.finite(observed_statistic)) {
     stop("The observed test statistic could not be computed.", call. = FALSE)
   }
@@ -134,16 +138,16 @@ NULL
   gamma_used <- min(max(round(abs(gamma_hat), 2L), 0.01), 0.99)
 
   row_index <- which(
-    quantile_table$n == n_used &
+    quantile_table$n == table_n &
       abs(quantile_table$gamma1 - gamma_used) < 1e-8
   )
   if (length(row_index) == 0L) {
     available_n <- sort(unique(quantile_table$n))
-    if (!n_used %in% available_n) {
+    if (!table_n %in% available_n) {
       stop(
         sprintf(
           "No %s quantiles are available for n=%d; available n values range from %s to %s.",
-          statistic, n_used, min(available_n), max(available_n)
+          statistic, table_n, min(available_n), max(available_n)
         ),
         call. = FALSE
       )
@@ -151,7 +155,7 @@ NULL
     stop(
       sprintf(
         "No %s quantiles are available for n=%d and |gamma1|=%.2f.",
-        statistic, n_used, gamma_used
+        statistic, table_n, gamma_used
       ),
       call. = FALSE
     )
@@ -169,8 +173,8 @@ NULL
          call. = FALSE)
   }
 
-  if (statistic == "CvM" && n > n_used) {
-    quantiles <- quantiles / sqrt(n_used)
+  if (statistic == "CvM" && above_table_range) {
+    quantiles <- quantiles / sqrt(table_n)
   }
 
   first_at_or_above <- which(quantiles >= observed_statistic)[1L]
@@ -183,7 +187,6 @@ NULL
   list(
     statistic = unname(observed_statistic),
     n = n,
-    n_used = n_used,
     gamma1_hat = gamma_hat,
     gamma1_used = gamma_used,
     p.value = unname(p_value)
@@ -198,7 +201,7 @@ PBGoF_ks_test <- function(data, ks_table = NULL) {
     data = data,
     table = ks_table,
     statistic = "KS",
-    statistic_function = function(x, parameters, n_used) {
+    statistic_function = function(x, parameters) {
       .sn_ks_statistic(x, parameters)
     }
   )
@@ -212,9 +215,8 @@ PBGoF_cvm_test <- function(data, cvm_table = NULL) {
     data = data,
     table = cvm_table,
     statistic = "CvM",
-    statistic_function = function(x, parameters, n_used) {
-      cvm <- .sn_cvm_statistic(x, parameters)
-      if (length(x) > n_used) cvm else sqrt(n_used) * cvm
+    statistic_function = function(x, parameters) {
+      .sn_cvm_statistic(x, parameters)
     }
   )
 }
