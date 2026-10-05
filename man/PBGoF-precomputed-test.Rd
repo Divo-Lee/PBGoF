@@ -9,14 +9,15 @@ PBGoF_ks_test(data, ks_table = NULL)
 PBGoF_cvm_test(data, cvm_table = NULL)
 }
 \arguments{
-\item{data}{A numeric vector whose length is represented in the table.}
+\item{data}{A numeric vector whose length is at least the smallest sample size
+represented in the table.}
 
 \item{ks_table, cvm_table}{Optional custom quantile tables. If \code{NULL},
 the corresponding table bundled with PBGoF is used.}
 }
 \value{
-A list containing \code{statistic}, actual sample size \code{n}, lookup and
-scaling sample size \code{n_used}, \code{gamma1_hat}, \code{gamma1_used}, and
+A list containing \code{statistic}, actual sample size \code{n}, table-lookup
+sample size \code{n_used}, \code{gamma1_hat}, \code{gamma1_used}, and
 \code{p.value}.
 }
 \description{
@@ -35,8 +36,9 @@ statistics are invariant to this sign change (Mateu-Figueras et al., 2007).
 The bundled tables therefore require only non-negative skewness values.
 
 For samples larger than 500, all observations remain in the fit and empirical
-distribution function, while the external statistic multiplier and table row
-use \code{n_used = 500}.
+distribution function, while the \code{n = 500} row is used for table lookup.
+The KS comparison uses \eqn{\sqrt{n}D_n}. For CvM, the stored \code{n = 500}
+quantiles are divided by \eqn{\sqrt{500}} and compared with \eqn{W_n^2}.
 }
 \references{
 Mateu-Figueras, G., Puig, P., and Pewsey, A. (2007). Goodness-of-fit tests for

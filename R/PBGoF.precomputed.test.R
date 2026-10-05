@@ -6,15 +6,15 @@
 #' `PBGoF_ks_test()` uses the Kolmogorov--Smirnov statistic and
 #' `PBGoF_cvm_test()` uses the Cramér--von Mises statistic.
 #'
-#' @param data A numeric vector. Its length must be represented in the
-#'   selected quantile table (30 through 500 in the bundled tables).
+#' @param data A numeric vector. Its length must be at least the smallest
+#'   sample size in the selected quantile table (30 in the bundled tables).
 #' @param ks_table,cvm_table An optional custom quantile table with columns
 #'   `n`, `gamma1`, and `q_0.01` through `q_0.99`. If `NULL`, the corresponding
 #'   table bundled with PBGoF is used.
 #'
 #' @return A list with components `statistic`, `n`, `n_used`, `gamma1_hat`,
 #'   `gamma1_used`, and `p.value`. `n` is the actual sample size and `n_used`
-#'   is the sample size used for statistic scaling and table lookup.
+#'   is the sample size used for table lookup.
 #'
 #' @details
 #' The observed distribution is fitted in DP form for the test statistic and
@@ -29,12 +29,12 @@
 #' gamma1. The absolute fitted skewness is rounded to
 #' two decimal places and truncated to `[0.01, 0.99]`.
 #'
-#' For samples larger than 500, all observations are retained for fitting and
-#' for constructing the empirical distribution function, but `n_used` is set
-#' to 500. Consequently, the external statistic multiplier and quantile-table
-#' lookup both use 500. This convention matches the scaling used to construct
-#' the bundled tables. Mateu-Figueras et al. (2007) found that, for sample sizes
-#' above 500, the quantiles of the EDF statistics were almost identical to
+#' For samples larger than 500, all observations are retained and `n_used` is
+#' set to 500 for table lookup. The KS comparison retains the actual-sample-size
+#' scaling, so `sqrt(n) * D_n` is compared with the stored `n = 500` quantiles.
+#' For CvM, the stored `n = 500` quantiles are divided by `sqrt(500)` and
+#' compared with the unscaled `W_n^2`. Mateu-Figueras et al. (2007) found that,
+#' for sample sizes above 500, the relevant quantiles were almost identical to
 #' those at 500 and recommended using the `n = 500` critical values.
 #'
 #' Because the tables store percentiles in one-percentage-point increments,
@@ -169,6 +169,10 @@ NULL
          call. = FALSE)
   }
 
+  if (statistic == "CvM" && n > n_used) {
+    quantiles <- quantiles / sqrt(n_used)
+  }
+
   first_at_or_above <- which(quantiles >= observed_statistic)[1L]
   if (is.na(first_at_or_above)) {
     p_value <- 1 - table_info$probabilities[length(table_info$probabilities)]
@@ -195,9 +199,7 @@ PBGoF_ks_test <- function(data, ks_table = NULL) {
     table = ks_table,
     statistic = "KS",
     statistic_function = function(x, parameters, n_used) {
-      # .sn_ks_statistic() uses sqrt(length(x)); only replace this external
-      # multiplier. The EDF itself must continue to use every observation.
-      .sn_ks_statistic(x, parameters) * sqrt(n_used / length(x))
+      .sn_ks_statistic(x, parameters)
     }
   )
 }
@@ -211,7 +213,8 @@ PBGoF_cvm_test <- function(data, cvm_table = NULL) {
     table = cvm_table,
     statistic = "CvM",
     statistic_function = function(x, parameters, n_used) {
-      sqrt(n_used) * .sn_cvm_statistic(x, parameters)
+      cvm <- .sn_cvm_statistic(x, parameters)
+      if (length(x) > n_used) cvm else sqrt(n_used) * cvm
     }
   )
 }
