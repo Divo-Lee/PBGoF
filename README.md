@@ -16,6 +16,12 @@ or ST model. It also adds `st.plot.check()` and the model-selectable
 
 ## Installation
 
+Install PBGoF from CRAN with:
+
+```r
+install.packages("PBGoF")
+```
+
 Install PBGoF 0.2.0 from a local source archive with:
 
 ```r
