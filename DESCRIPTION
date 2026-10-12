@@ -1,8 +1,8 @@
 Package: PBGoF
 Type: Package
-Title: Parametric Bootstrap Goodness-of-Fit Tests for Skew-Normal and Skew-t Distributions
+Title: Goodness-of-Fit Tests for Skew-Normal and Skew-t Models
 Version: 0.2.0
-Date: 2026-09-19
+Date: 2026-10-11
 Authors@R: c(
     person("Hongxiang", "Li", email = "hxli@ynnu.edu.cn", role = c("aut", "cre")),
     person("Chenglin", "Xu", email = "chenglinx@ynnu.edu.cn", role = "aut"),
@@ -14,6 +14,8 @@ Depends:
 Description: Provides precomputed-quantile goodness-of-fit tests for
     skew-normal distributions, parametric-bootstrap tests for skew-normal and
     skew-t distributions, robust fitting, and graphical diagnostics.
+    Package methods and documentation are described by Li, Xu, and Khang
+    (2026) <https://github.com/Divo-Lee/PBGoF>.
 Imports:
     methods,
     sn
